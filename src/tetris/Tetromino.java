@@ -1,5 +1,6 @@
 package tetris;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.macalester.graphics.GraphicsGroup;
@@ -18,6 +19,10 @@ public class Tetromino {
 
     public void move(){
         //TODO: Implement method to move tetromino down by 1 "block"
+    }
+
+    public List<Rectangle> getSquares(){
+        return new ArrayList<>(squares);
     }
 
     public GraphicsGroup getShape(){
