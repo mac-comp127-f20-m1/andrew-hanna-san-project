@@ -12,6 +12,7 @@ public class Game {
 
     public Game(){
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
+        new Tetromino(canvas);
     }
 
     private void gameLoop(){
