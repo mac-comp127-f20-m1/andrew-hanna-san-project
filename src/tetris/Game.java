@@ -16,7 +16,6 @@ public class Game {
 
     public Game(){
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
-        new Tetromino(canvas);
 
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT, 1); // not sure about the last parameter "squaresize"
 
@@ -26,10 +25,10 @@ public class Game {
     private void gameLoop(){
         // TODO: Implement main game loop.
         // This will call everything needed to run the game.
-        current.generateSquares();
+        // current.generateSquares();
         board.addSquares(current);
-        current.move();
-        canvas.onMouseMove((mouseMotion)->current.moveHorirontal(mouseMotion.getPosition()));
+        current.moveDown();
+        // canvas.onMouseMove((mouseMotion)->current.moveHorirontal(mouseMotion.getPosition()));
         checkCollision();
         if (checkRound() == true){
             board.addSquares(current);

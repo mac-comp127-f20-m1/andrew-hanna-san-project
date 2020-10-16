@@ -3,62 +3,98 @@ package tetris;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 
 public class Tetromino {
     GraphicsGroup shape;
-    private double squareSize = 20;
-    List<Rectangle> squares;
-    List<Integer> xPositions; //this is in terms of grids like 0, 1, 2, ...
-    List<Integer> yPositions; //this is in terms of grids like 0, 1, 2, ... 
+    private double squareSize = 40;
+    private List<Rectangle> squares;
+    private final List<Integer> xPositions = new ArrayList<Integer>(); //this is in terms of grids like 0, 1, 2, ...
+    private final List<Integer> yPositions = new ArrayList<Integer>(); //this is in terms of grids like 0, 1, 2, ... 
 
-    public Tetromino(CanvasWindow canvas){
-
-        generateSquares();
-        lShape1();
-
-        canvas.add(shape);
-        canvas.draw();
-        //TODO: Implement method to randomly generate a tetromino consisting of 4 squares
-    }
-
-    public void move(){
-        for (Rectangle square: squares){
-            shape.moveBy(squareSize, 0);
-        }
-        for (Integer y : yPositions){
-            y = y + 1;
-        }
-        //TODO: Implement method to move tetromino down by 1 "block"
-    }
-
-    // Comment by Hanna: maybe need a moveHorirontal method that allows mouse tracking?
-    public void moveHorirontal(Point point){
+     /**
+     * This randomly generates a tetromino at position x and y. 
+     */
+    public Tetromino(int initialX, int initialY){
         
+        generateSquares();
+        generateRandom();
+        setPosition(initialX, initialY);
+        drawShape();
     }
 
-    public List<Rectangle> getSquares(){
-        return new ArrayList<>(squares);
+
+    /**
+     * Move the Tetromino down by one block.
+     */
+    public void moveUp(){
+        for (int i = 0; i < yPositions.size(); i++){
+            yPositions.set(i, yPositions.get(i) - 1);
+        }
+        drawShape();
     }
 
-    public GraphicsGroup getShape(){
-        return shape;
+
+    /**
+     * Move the Tetromino down by one block.
+     */
+    public void moveDown(){
+        for (int i = 0; i < yPositions.size(); i++){
+            yPositions.set(i, yPositions.get(i) + 1);
+        }
+        drawShape();
     }
 
-    public List<Integer> getXs() {
+    /**
+     * Move the Tetromino right by one block.
+     */
+    public void moveRight(){
+        for (int i = 0; i < xPositions.size(); i++){
+            xPositions.set(i, xPositions.get(i) + 1);
+        }
+        drawShape();
+    }
+
+    /**
+     * Move the Tetromino left by one block.
+     */
+    public void moveLeft(){
+        for (int i = 0; i < xPositions.size(); i++){
+            xPositions.set(i, xPositions.get(i) -1);
+        }
+        drawShape();
+    }
+
+    public void addTetrominoToCanvas(CanvasWindow canvas){
+        canvas.add(shape);
+    }
+
+    public List<Integer> getXPosition(){
         return xPositions;
     }
 
-    public List<Integer> getYs() {
+    public List<Integer> getYPosition(){
         return yPositions;
     }
 
 
-    public void generateSquares(){  // is it okay to switch it to public?
+    public void rotateShape(){
+        List<Integer> oldX = List.copyOf(xPositions);
+        List<Integer> oldY = List.copyOf(yPositions);
+        for (int i = 0; i < xPositions.size(); i++){
+            xPositions.set(i, oldY.get(i));
+        }
+        for (int i = 0; i < xPositions.size(); i++){
+            yPositions.set(i, oldX.get(i));
+        }
+        drawShape();
+    }
+
+    private void generateSquares(){  
         squares = new ArrayList<Rectangle>();
         shape = new GraphicsGroup();
         Collections.addAll(squares, new Rectangle(0, 0, squareSize, squareSize),
@@ -71,63 +107,87 @@ public class Tetromino {
     }
 
 
-    private void Line1(){
-        xPositions = new ArrayList<Integer>();
-        yPositions = new ArrayList<Integer>();
-
-        int i = 0;
-        for (Rectangle square: squares){
-            square.setPosition(i * squareSize,0);
-            xPositions.add(i);
-            yPositions.add(0);
-            i++;
-        }
-    }
-
-    private void Line2(){
-        xPositions = new ArrayList<Integer>();
-        yPositions = new ArrayList<Integer>();
-
-        int i = 0;
-        for (Rectangle square: squares){
-            square.setPosition(0, i*squareSize);
-            xPositions.add(0);
-            yPositions.add(i);
-            i++;
-        }
-    }
-
-    private void square(){
-        xPositions = new ArrayList<Integer>();
-        Collections.addAll(xPositions, 0, 1, 0, 1);
-        yPositions = new ArrayList<Integer>();
-        Collections.addAll(yPositions, 0, 0, 1, 1);
-        squares.get(0).setPosition(0,0);
-        squares.get(1).setPosition(squareSize,0);
-        squares.get(2).setPosition(0, squareSize);
-        squares.get(3).setPosition(squareSize, squareSize);
-    }
-    
     private void zShape1(){
-        xPositions = new ArrayList<Integer>();
         Collections.addAll(xPositions, 0, 1, 1, 2);
-        yPositions = new ArrayList<Integer>();
         Collections.addAll(yPositions, 0, 0, 1, 1);
-        squares.get(0).setPosition(0, 0);
-        squares.get(1).setPosition(squareSize,0);
-        squares.get(2).setPosition(squareSize, squareSize);
-        squares.get(3).setPosition(2 * squareSize, squareSize);
+    }
+
+    private void zShape2(){
+        Collections.addAll(xPositions, 0, 1, 1, 2);
+        Collections.addAll(yPositions, 1, 0, 1, 0);
+    }
+
+    private void lineShape(){
+        Collections.addAll(xPositions, 0, 1, 2, 3);
+        Collections.addAll(yPositions, 0, 0, 0, 0);
     }
 
     private void lShape1(){
-        xPositions = new ArrayList<Integer>();
-        Collections.addAll(xPositions, 0, 0, 0, 1);
-        yPositions = new ArrayList<Integer>();
-        Collections.addAll(yPositions, 0, 1, 2, 2);
-        squares.get(0).setPosition(0, 0);
-        squares.get(1).setPosition(0, squareSize);
-        squares.get(2).setPosition(0, 2* squareSize);
-        squares.get(3).setPosition( squareSize, 2 * squareSize);
+        Collections.addAll(xPositions, 0, 0, 1, 2);
+        Collections.addAll(yPositions, 0, 1, 1, 1);
     }
 
+    private void lShape2(){
+        Collections.addAll(xPositions, 0, 1, 2, 2);
+        Collections.addAll(yPositions, 1, 1, 1, 0);
+    }
+
+    private void squareShape(){
+        Collections.addAll(xPositions, 0, 0, 1, 1);
+        Collections.addAll(yPositions, 0, 1, 0, 1);
+    }
+
+    private void tShape(){
+        Collections.addAll(xPositions, 1, 0, 1, 2);
+        Collections.addAll(yPositions, 0, 1, 1, 1);
+    }
+
+    private void drawShape(){
+        for (int i = 0; i < yPositions.size(); i++){
+            squares.get(i).setPosition(xPositions.get(i) * squareSize , yPositions.get(i) * squareSize);
+        }
+    }
+
+    private void generateRandom() {
+        Random rand = new Random();
+        switch(rand.nextInt(7)) {
+            case 0:
+                zShape1();
+                break;
+            case 1:
+                zShape2();
+                break;
+            case 2:
+                lShape1();
+                break;
+            case 3:
+                lShape2();
+                break;
+            case 4:
+                squareShape();
+                break;
+            case 5:
+                tShape();
+                break;
+            case 6:
+                lineShape();
+                break;
+        }
+    }
+
+    private void setPosition(int x, int y){
+        for (int i = 0; i < xPositions.size(); i++){
+            xPositions.set(i, xPositions.get(i) + x);
+            yPositions.set(i, yPositions.get(i) + y);
+        }
+    }
+
+    // private static final List<Provider<Tetromino>> tetrominoGenerators = List.of(
+    //     Tetromino::square,
+    //     Tetromino::lShape,
+    //     ...etc..
+    // );
+
+
+    
 }
