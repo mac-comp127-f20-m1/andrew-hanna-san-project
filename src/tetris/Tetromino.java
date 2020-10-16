@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 
 public class Tetromino {
@@ -35,6 +36,11 @@ public class Tetromino {
         //TODO: Implement method to move tetromino down by 1 "block"
     }
 
+    // Comment by Hanna: maybe need a moveHorirontal method that allows mouse tracking?
+    public void moveHorirontal(Point point){
+        
+    }
+
     public List<Rectangle> getSquares(){
         return new ArrayList<>(squares);
     }
@@ -52,7 +58,7 @@ public class Tetromino {
     }
 
 
-    private void generateSquares(){
+    public void generateSquares(){  // is it okay to switch it to public?
         squares = new ArrayList<Rectangle>();
         shape = new GraphicsGroup();
         Collections.addAll(squares, new Rectangle(0, 0, squareSize, squareSize),
