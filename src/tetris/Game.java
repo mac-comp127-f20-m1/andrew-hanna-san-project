@@ -14,15 +14,16 @@ public class Game {
     final double INITIAL_MOVE_TIME = 1;
     final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
+    final int SQUARE_SIZE = WINDOW_WIDTH / BOARD_WIDTH;
 
     public Game(){
         timeUntilPieceMoves = INITIAL_MOVE_TIME;
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        current = new Tetromino(6, 1);
+        current = new Tetromino(6, 1, SQUARE_SIZE);
         current.addTetrominoToCanvas(canvas);
 
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, WINDOW_WIDTH / BOARD_WIDTH);
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
         // First goal: make something happen at a timed interval
         canvas.animate( dt -> {
             timeUntilPieceMoves -= dt;
@@ -41,7 +42,7 @@ public class Game {
         canvas.onClick((click)->current.rotateShape());
         if(checkCollision()){
             board.addSquares(current);
-            current = new Tetromino(6, 1);
+            current = new Tetromino(6, 1, SQUARE_SIZE);
         }
         board.removeFullRows();
         // if (checkRound() == true)
@@ -81,9 +82,9 @@ public class Game {
     private void restartGame(){
         canvas.removeAll();
         canvas.pause(3000);
-        current = new Tetromino(6, 1);
+        current = new Tetromino(6, 1, SQUARE_SIZE);
         current.addTetrominoToCanvas(canvas);
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, WINDOW_WIDTH / BOARD_WIDTH);
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
     }
 
     public static void main(String[] args) {
