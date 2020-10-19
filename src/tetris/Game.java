@@ -1,9 +1,6 @@
 package tetris;
 
 import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.events.MouseMotionEventHandler;
-import edu.macalester.graphics.Point;
 
 public class Game {
     private CanvasWindow canvas;

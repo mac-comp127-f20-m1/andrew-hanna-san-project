@@ -3,7 +3,6 @@ package tetris;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Rectangle;
 
