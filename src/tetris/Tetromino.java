@@ -25,16 +25,31 @@ public class Tetromino {
         drawShape();
     }
 
+    public boolean checkCollision(Board board){
+        for(Square square : squares){
+            int x = square.getX();
+            int y = square.getY();
+            if(y + 1 >= board.getGrid().size() || board.getGrid().get(y + 1).get(x) 
+            ){
+                board.addSquares(squares);
+                return true;
+            }
+            //Check if square is just above a "true" place on the board.
+            //If yes, run some stuff and then return true
+        }
+        return false;
+    }
 
     /**
      * Move the Tetromino up by one block.
      */
-    /*public void moveUp(){
+    public void moveUp(){
         for (int i = 0; i < squares.size(); i++){
-            squares.get(i).set(i, yPositions.get(i) - 1);
+            int currentY = squares.get(i).getY();
+            squares.get(i).setY(currentY - 1)
         }
         drawShape();
-    }*/
+    }
 
 
     /**
@@ -186,7 +201,6 @@ public class Tetromino {
         }
     }
 
-    //TODO: Delete test code
     public void addTetrominoToCanvas(CanvasWindow canvas){
         canvas.add(shape);
     }

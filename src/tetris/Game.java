@@ -11,7 +11,7 @@ public class Game {
     private Tetromino current;
     private double timeUntilPieceMoves;
 
-    final double INITIAL_MOVE_TIME = 1;
+    final double INITIAL_MOVE_TIME = 0.14;
     final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
     final int SQUARE_SIZE = WINDOW_WIDTH / BOARD_WIDTH;
@@ -38,7 +38,7 @@ public class Game {
         // This will call everything needed to run the game.
         //canvas.onMouseMove((mouseMotion)->current.(mouseMotion.getPosition()));
         canvas.onClick((click)->current.rotateShape());
-        if(checkCollision()){
+        if(current.checkCollision(board)){
             board.addSquares(current);
             current = new Tetromino(6, 1, SQUARE_SIZE);
         }
@@ -48,16 +48,6 @@ public class Game {
         // if (checkRound() == false)
         //     restartGame();
         
-    }
-
-    private boolean checkCollision(){
-        // TODO: Implement collision check.
-        // This checks the position of "current" against the position of blocks already on the board.
-        // Uses getGrid() from Board and getXs()/getYs() from Tetromino.
-        // if (current.getXPosition().equals(board.getGrid()) && current.getYPosition().equals(board.getGrid())){
-        //     return true;
-        // }
-        return false;
     }
     
     /**
