@@ -34,8 +34,12 @@ public class Board {
         boardGroup = new GraphicsGroup();
     }
 
-    public void addSquares(Tetromino squares){
+    public void addSquares(List<Square> squares){
         //TODO: Implement method to add squares from a tetromino that has hit the ground to the board.
+        for(Square square : squares){
+            grid.get(square.getY()).set(square.getX(), true);
+            boardGroup.add(square.getRectangle());
+        }
     }
 
     /**

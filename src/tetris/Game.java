@@ -36,7 +36,6 @@ public class Game {
         //canvas.onMouseMove((mouseMotion)->current.(mouseMotion.getPosition()));
         canvas.onClick((click)->current.rotateShape());
         if(current.checkCollision(board)){
-            board.addSquares(current);
             current = new Tetromino(6, 1, SQUARE_SIZE);
         }
         board.removeFullRows();
