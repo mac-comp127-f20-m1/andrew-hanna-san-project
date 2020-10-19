@@ -36,7 +36,8 @@ public class Game {
         //canvas.onMouseMove((mouseMotion)->current.(mouseMotion.getPosition()));
         canvas.onClick((click)->current.rotateShape());
         if(current.checkCollision(board)){
-            current = new Tetromino(6, 1, SQUARE_SIZE);
+            canvas.remove(current.getShape());
+            createTetromino();
         }
         board.removeFullRows();
         // if (checkRound() == true)
@@ -64,11 +65,14 @@ public class Game {
      */
     private void restartGame(){
         canvas.removeAll();
-
-        current = new Tetromino(6, 1, SQUARE_SIZE);
-        current.addTetrominoToCanvas(canvas);
-        
+        createTetromino();
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
+        canvas.add(board.getGroup());
+    }
+
+    private void createTetromino(){
+        current = new Tetromino(6, 1, SQUARE_SIZE);
+        canvas.add(current.getShape());
     }
 
     public static void main(String[] args) {

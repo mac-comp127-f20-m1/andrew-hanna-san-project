@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Rectangle;
 
@@ -29,13 +28,12 @@ public class Tetromino {
         for(Square square : squares){
             int x = square.getX();
             int y = square.getY();
-            if(y + 1 >= board.getGrid().size() || board.getGrid().get(y + 1).get(x) 
+            if(y + 1 >= board.getGrid().size() ||
+                board.getGrid().get(y + 1).get(x)
             ){
                 board.addSquares(squares);
                 return true;
             }
-            //Check if square is just above a "true" place on the board.
-            //If yes, run some stuff and then return true
         }
         return false;
     }
@@ -201,8 +199,8 @@ public class Tetromino {
         }
     }
 
-    public void addTetrominoToCanvas(CanvasWindow canvas){
-        canvas.add(shape);
+    public GraphicsGroup getShape() {
+        return shape;
     }
 
     private void setPosition(int x, int y){
