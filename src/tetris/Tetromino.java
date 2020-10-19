@@ -20,7 +20,6 @@ public class Tetromino {
     public Tetromino(int initialX, int initialY, int squareSize){
         this.squareSize = squareSize;
         squares = new ArrayList<>();
-        //generateSquares();
         generateRandom();
         setPosition(initialX, initialY);
         drawShape();
@@ -97,19 +96,6 @@ public class Tetromino {
         }
         return Collections.unmodifiableList(result);
     }
-
-    /*private void generateSquares(){  
-        squares = new ArrayList<Rectangle>();
-        shape = new GraphicsGroup();
-        Collections.addAll(squares, new Rectangle(0, 0, squareSize, squareSize),
-        new Rectangle(0, 0, squareSize, squareSize),
-        new Rectangle(0, 0, squareSize, squareSize),
-        new Rectangle(0, 0, squareSize, squareSize));
-        for (Rectangle sqaure: squares){
-            shape.add(sqaure);
-        }
-    }*/
-
 
     private void zShape1(){
         squares.add(new Square(0, 0, new Rectangle(0, 0, squareSize, squareSize)));
