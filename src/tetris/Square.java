@@ -7,6 +7,10 @@ public class Square {
     private int y;
     private Rectangle rectangle;
 
+    /**
+     * Creates a new Square, with an integer x, y position and a 
+     * rectangle to visually represent it.
+     */
     public Square(int x, int y, Rectangle rectangle){
         this.x = x;
         this.y = y;
