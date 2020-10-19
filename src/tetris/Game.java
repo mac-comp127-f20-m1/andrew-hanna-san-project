@@ -20,10 +20,8 @@ public class Game {
         timeUntilPieceMoves = INITIAL_MOVE_TIME;
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        current = new Tetromino(6, 1, SQUARE_SIZE);
-        current.addTetrominoToCanvas(canvas);
+        restartGame();
 
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
         // First goal: make something happen at a timed interval
         canvas.animate( dt -> {
             timeUntilPieceMoves -= dt;
@@ -80,9 +78,10 @@ public class Game {
      */
     private void restartGame(){
         canvas.removeAll();
-        canvas.pause(3000);
+
         current = new Tetromino(6, 1, SQUARE_SIZE);
         current.addTetrominoToCanvas(canvas);
+        
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
     }
 
