@@ -29,7 +29,7 @@ public class Tetromino {
 
 
     /**
-     * Move the Tetromino down by one block.
+     * Move the Tetromino up by one block.
      */
     public void moveUp(){
         for (int i = 0; i < yPositions.size(); i++){
@@ -68,6 +68,7 @@ public class Tetromino {
         }
         drawShape();
     }
+
 
     public void addTetrominoToCanvas(CanvasWindow canvas){
         canvas.add(shape);
