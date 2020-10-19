@@ -40,11 +40,8 @@ public class Game {
             createTetromino();
         }
         board.removeFullRows();
-        // if (checkRound() == true)
-        //     board.addSquares(current);
-        // if (checkRound() == false)
-        //     restartGame();
-        
+        if (checkLoss() == true)
+            restartGame();
     }
     
     /**
@@ -52,11 +49,11 @@ public class Game {
      * Return boolean 
      * @return
      */
-    private Boolean checkRound(){
-        // if (current.getYPosition().contains(0)){
-        //     return false;
-        // }
-        return true;
+    private Boolean checkLoss(){
+        if(board.getGrid().get(0).contains(true)){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -71,7 +68,7 @@ public class Game {
     }
 
     private void createTetromino(){
-        current = new Tetromino(6, 1, SQUARE_SIZE);
+        current = new Tetromino(BOARD_WIDTH / 2, 0, SQUARE_SIZE);
         canvas.add(current.getShape());
     }
 
