@@ -25,6 +25,7 @@ public class Game {
 
     private void gameLoop(double dt) {
         // First, check if the timer is at 0.
+        board.updatePositions();
         timeUntilPieceMoves -= dt;
         if (timeUntilPieceMoves < 0) {
             // If it is, first check if the tetromino is colliding with another/the bottom
@@ -46,6 +47,7 @@ public class Game {
     }
 
     private void keyDownHandler(KeyboardEvent pressed) {
+        timeUntilPieceMoves = INITIAL_MOVE_TIME;
         if(pressed.getKey().equals(Key.LEFT_ARROW) || pressed.getKey().equals(Key.A)){
             current.moveLeft();
         }else if(pressed.getKey().equals(Key.RIGHT_ARROW) || pressed.getKey().equals(Key.D)){

@@ -35,9 +35,9 @@ public class Board {
     }
 
     public void addSquares(List<Square> squares){
-        //TODO: Implement method to add squares from a tetromino that has hit the ground to the board.
         for(Square square : squares){
             grid.get(square.getY()).set(square.getX(), true);
+            visualGrid.get(square.getY()).set(square.getX(), square.getRectangle());
             boardGroup.add(square.getRectangle());
         }
     }
@@ -52,7 +52,9 @@ public class Board {
                 grid.remove(i);
                 //Remove the visuals for the full row from the boardGroup
                 for(Rectangle square : visualGrid.get(i)){
-                    boardGroup.remove(square);
+                    if(square != null){
+                        boardGroup.remove(square);
+                    }
                 }
                 //Remove the row from the visual grid
                 visualGrid.remove(i);
@@ -60,7 +62,8 @@ public class Board {
                 grid.add(generateNewBooleanRow());
                 visualGrid.add(generateNewVisualRow());
                 //Finally, move all the squares above the full row down by one square
-                moveAboveRowsDown(i);
+                //moveAboveRowsDown(i);
+                updatePositions();
             }
         }
     }
@@ -89,11 +92,14 @@ public class Board {
         return row;
     }
 
-    private void moveAboveRowsDown(int index){
-        for(int i = index; i < maxHeight - 1; i++){
-            for(Rectangle square : visualGrid.get(i)){
-                if(square != null)
-                    square.moveBy(0, squareSize);
+    public void updatePositions(){
+        for(int i = 0; i < visualGrid.size(); i++){
+            for(int j = 0; j < visualGrid.get(i).size(); j++){
+                Rectangle square = visualGrid.get(i).get(j);
+                if(square != null){
+                    square.setX(j * squareSize);
+                    square.setY(i * squareSize);
+                }
             }
         }
     }
