@@ -40,6 +40,7 @@ public class Board {
             visualGrid.get(square.getY()).set(square.getX(), square.getRectangle());
             boardGroup.add(square.getRectangle());
         }
+        updatePositions();
     }
 
     /**
@@ -49,20 +50,15 @@ public class Board {
         for(int i = 0; i < maxHeight; i++){
             List<Boolean> row = grid.get(i);
             if(row.stream().allMatch(square -> square)){
-                grid.remove(i);
                 //Remove the visuals for the full row from the boardGroup
-                for(Rectangle square : visualGrid.get(i)){
-                    if(square != null){
-                        boardGroup.remove(square);
-                    }
-                }
-                //Remove the row from the visual grid
-                visualGrid.remove(i);
+                visualGrid.get(i).forEach(boardGroup::remove);
                 //Add new rows in the grid and visual grid
-                grid.add(generateNewBooleanRow());
-                visualGrid.add(generateNewVisualRow());
+                grid.add(0, generateNewBooleanRow());
+                visualGrid.add(0, generateNewVisualRow());
+                //Remove the row from the visual grid
+                grid.remove(i + 1);
+                visualGrid.remove(i + 1);
                 //Finally, move all the squares above the full row down by one square
-                //moveAboveRowsDown(i);
                 updatePositions();
             }
         }
