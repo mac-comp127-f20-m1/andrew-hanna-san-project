@@ -56,11 +56,10 @@ public class Game {
         // TODO: Implement collision check.
         // This checks the position of "current" against the position of blocks already on the board.
         // Uses getGrid() from Board and getXs()/getYs() from Tetromino.
-        if (current.getXPosition().equals(board.getGrid()) && current.getYPosition().equals(board.getGrid())){
-            return true;
-        }
+        // if (current.getXPosition().equals(board.getGrid()) && current.getYPosition().equals(board.getGrid())){
+        //     return true;
+        // }
         return false;
-        
     }
     
     /**
@@ -69,9 +68,9 @@ public class Game {
      * @return
      */
     private Boolean checkRound(){
-        if (current.getYPosition().contains(0)){
-            return false;
-        }
+        // if (current.getYPosition().contains(0)){
+        //     return false;
+        // }
         return true;
     }
 

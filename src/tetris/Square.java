@@ -17,8 +17,12 @@ public class Square {
         this.x = x;
     }
 
-    public void decrementY() {
-        y--;
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void incrementY() {
+        setY(y + 1);
     }
 
     public int getX() {
