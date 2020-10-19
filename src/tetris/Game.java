@@ -6,29 +6,29 @@ import edu.macalester.graphics.events.MouseMotionEventHandler;
 import edu.macalester.graphics.Point;
 
 public class Game {
-    CanvasWindow canvas;
-    Board board;
-    Tetromino current;
+    private CanvasWindow canvas;
+    private Board board;
+    private Tetromino current;
+    private double timeUntilPieceMoves;
 
-
-    final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
+    final double INITIAL_MOVE_TIME = 1;
+    final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
 
     public Game(){
+        timeUntilPieceMoves = INITIAL_MOVE_TIME;
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
 
         current = new Tetromino(6, 1);
         current.addTetrominoToCanvas(canvas);
 
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, 1); // not sure about the last parameter "squaresize"
-
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, WINDOW_WIDTH / BOARD_WIDTH);
         // First goal: make something happen at a timed interval
         canvas.animate( dt -> {
             timeUntilPieceMoves -= dt;
             if (timeUntilPieceMoves < 0) {
                 current.moveDown();
-                // System.out.println("pretend the piece moves down!");
-                // timeUntilPieceMoves = currentPieceSpeedOrWhatever;
+                timeUntilPieceMoves = INITIAL_MOVE_TIME;
             }
             gameLoop();
         });
@@ -37,17 +37,18 @@ public class Game {
     private void gameLoop(){
         // TODO: Implement main game loop.
         // This will call everything needed to run the game.
-        board.addSquares(current); // this may not be right, but is there a way to call private methods in other class's constructor?
-        canvas.onMouseMove((mouseMotion)->current.(mouseMotion.getPosition()));
+        //canvas.onMouseMove((mouseMotion)->current.(mouseMotion.getPosition()));
         canvas.onClick((click)->current.rotateShape());
-        checkCollision();
-        board.removeFullRows();
-        if (checkRound() == true){
+        if(checkCollision()){
             board.addSquares(current);
-        if (checkRound() == false){
-            restartGame();
+            current = new Tetromino(6, 1);
         }
-        }
+        board.removeFullRows();
+        // if (checkRound() == true)
+        //     board.addSquares(current);
+        // if (checkRound() == false)
+        //     restartGame();
+        
     }
 
     private boolean checkCollision(){
@@ -82,7 +83,7 @@ public class Game {
         canvas.pause(3000);
         current = new Tetromino(6, 1);
         current.addTetrominoToCanvas(canvas);
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, 1);
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, WINDOW_WIDTH / BOARD_WIDTH);
     }
 
     public static void main(String[] args) {
