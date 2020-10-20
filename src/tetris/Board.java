@@ -34,6 +34,9 @@ public class Board {
         boardGroup = new GraphicsGroup();
     }
 
+    /**
+     * Adds the given List of Square objects to the grid.
+     */
     public void addSquares(List<Square> squares){
         for(Square square : squares){
             grid.get(square.getY()).set(square.getX(), true);
@@ -64,10 +67,16 @@ public class Board {
         }
     }
 
+    /**
+     * Returns the 2d grid of booleans used to track whether or not a block is full.
+     */
     public List<List<Boolean>> getGrid() {
         return grid;
     }
 
+    /**
+     * Returns the GraphicsGroup that any blocks already on the board are placed in.
+     */
     public GraphicsGroup getGroup(){
         return boardGroup;
     }
@@ -88,7 +97,7 @@ public class Board {
         return row;
     }
 
-    public void updatePositions(){
+    private void updatePositions(){
         for(int i = 0; i < visualGrid.size(); i++){
             for(int j = 0; j < visualGrid.get(i).size(); j++){
                 Rectangle square = visualGrid.get(i).get(j);
