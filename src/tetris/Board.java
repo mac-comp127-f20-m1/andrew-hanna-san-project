@@ -108,4 +108,8 @@ public class Board {
             }
         }
     }
+
+    public int getMaxWidth(){
+        return maxWidth;
+    }
 }
