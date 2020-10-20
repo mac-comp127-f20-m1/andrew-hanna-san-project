@@ -1,6 +1,7 @@
 package tetris;
 
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEvent;
 
@@ -9,6 +10,8 @@ public class Game {
     private Board board;
     private Tetromino current;
     private double timeUntilPieceMoves;
+    private int score = 0;
+    private GraphicsText scoreDisplay;
 
     final double INITIAL_MOVE_TIME = 0.14;
     final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
@@ -23,6 +26,20 @@ public class Game {
         canvas.animate(this::gameLoop);
     }
 
+    /**
+     * Restart game by removing all the existing squares, and generate+add a new tetro to the canvas
+     */
+    private void restartGame() {
+        canvas.removeAll();
+        createTetromino();
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
+        canvas.add(board.getGroup());
+        score = 0;
+        scoreDisplay = new GraphicsText();
+        updateScore();
+        canvas.add(scoreDisplay);
+    }
+
     private void gameLoop(double dt) {
         // First, check if the timer is at 0.
         timeUntilPieceMoves -= dt;
@@ -32,7 +49,7 @@ public class Game {
                 // If the tetromino is hitting something, add it to the board and make a new one
                 canvas.remove(current.getShape());
                 createTetromino();
-                board.removeFullRows();
+                score += board.removeFullRows();
                 // After adding it to the board, check if the game has been lost.
                 if (checkLoss() == true)
                     restartGame();
@@ -40,9 +57,15 @@ public class Game {
                 // Otherwise, move the tetromino down a block.
                 current.moveDown();
             }
-            // Finally, reset the timer.
-            timeUntilPieceMoves = INITIAL_MOVE_TIME;
+            // Finally, reset the timer and update the score display.
+            timeUntilPieceMoves = INITIAL_MOVE_TIME / 1 + (score / 10000.0);
+            updateScore();
         }
+    }
+
+    private void updateScore(){
+        scoreDisplay.setText("Score: " + score);
+        scoreDisplay.setPosition(0, 0 + scoreDisplay.getLineHeight());
     }
 
     private void keyDownHandler(KeyboardEvent pressed) {
@@ -66,16 +89,6 @@ public class Game {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Restart game by removing all the existing squares, and generate+add a new tetro to the canvas
-     */
-    private void restartGame() {
-        canvas.removeAll();
-        createTetromino();
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
-        canvas.add(board.getGroup());
     }
 
     private void createTetromino() {

@@ -49,10 +49,12 @@ public class Board {
     /**
      * Checks for and removes any full rows. Also moves any rows above those rows down.
      */
-    public void removeFullRows(){
+    public int removeFullRows(){
+        int clearedRows = 0;
         for(int i = 0; i < maxHeight; i++){
             List<Boolean> row = grid.get(i);
             if(row.stream().allMatch(square -> square)){
+                clearedRows++;
                 //Remove the visuals for the full row from the boardGroup
                 visualGrid.get(i).forEach(boardGroup::remove);
                 //Add new rows in the grid and visual grid
@@ -65,6 +67,14 @@ public class Board {
                 updatePositions();
             }
         }
+        int score = 0;
+        if(clearedRows > 0){
+            score += clearedRows * 200;
+            if(clearedRows < 4){
+                score -= 100;
+            }
+        }
+        return score;
     }
 
     /**
