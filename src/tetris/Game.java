@@ -36,6 +36,7 @@ public class Game {
         canvas.add(board.getGroup());
         score = 0;
         scoreDisplay = new GraphicsText();
+        scoreDisplay.setFontSize(WINDOW_HEIGHT / 40);
         updateScore();
         canvas.add(scoreDisplay);
     }
@@ -55,7 +56,7 @@ public class Game {
                     restartGame();
             } else {
                 // Otherwise, move the tetromino down a block.
-                current.moveDown();
+                current.moveDown(board);
             }
             // Finally, reset the timer and update the score display.
             timeUntilPieceMoves = INITIAL_MOVE_TIME / 1 + (score / 10000.0);
@@ -65,10 +66,11 @@ public class Game {
 
     private void updateScore(){
         scoreDisplay.setText("Score: " + score);
-        scoreDisplay.setPosition(0, 0 + scoreDisplay.getLineHeight());
+        scoreDisplay.setPosition(WINDOW_WIDTH / 40, 0 + scoreDisplay.getLineHeight());
     }
 
     private void keyDownHandler(KeyboardEvent pressed) {
+        double oldTime = timeUntilPieceMoves;
         timeUntilPieceMoves = INITIAL_MOVE_TIME;
         if(pressed.getKey().equals(Key.LEFT_ARROW) || pressed.getKey().equals(Key.A)){
             current.moveLeft(board);
@@ -76,6 +78,10 @@ public class Game {
             current.moveRight(board);
         } else if (pressed.getKey().equals(Key.UP_ARROW) || pressed.getKey().equals(Key.W)){
             current.rotateShape(board);
+        } else if (pressed.getKey().equals(Key.DOWN_ARROW) || pressed.getKey().equals(Key.S)){
+            current.moveDown(board);
+        } else {
+            timeUntilPieceMoves = oldTime;
         }
     }
 
