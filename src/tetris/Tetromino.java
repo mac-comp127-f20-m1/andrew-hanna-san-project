@@ -20,6 +20,10 @@ public class Tetromino {
     GraphicsGroup shape;
     private int squareSize;
     private List<Square> squares;
+    private int type;
+    private int pivotX;
+    private int pivotY;
+
 
      /**
      * This randomly generates a tetromino at position x and y. 
@@ -65,6 +69,7 @@ public class Tetromino {
         for (int i = 0; i < squares.size(); i++){
             squares.get(i).incrementY();
         }
+        pivotY = pivotY + 1;
         drawShape();
     }
 
@@ -76,6 +81,7 @@ public class Tetromino {
             int currentX = squares.get(i).getX();
             squares.get(i).setX(currentX + 1);
         }
+        pivotX = pivotX + 1;
         drawShape();
     }
 
@@ -87,19 +93,25 @@ public class Tetromino {
             int currentX = squares.get(i).getX();
             squares.get(i).setX(currentX - 1);
         }
+        pivotX = pivotX - 1;
         drawShape();
     }
 
+    
     public void rotateShape(){
-        List<Integer> oldX = getOldXs();
-        List<Integer> oldY = getOldYs();
-        for (int i = 0; i < squares.size(); i++){
-            squares.get(i).setX(oldY.get(i));
+
+        if (type == 5){
+        } else {
+            List<Integer> oldX = getOldXs();
+            List<Integer> oldY = getOldYs();
+            for (int i = 0; i < squares.size(); i++){
+                squares.get(i).setX(pivotX + pivotY - oldY.get(i));
+            }
+            for (int i = 0; i < squares.size(); i++){
+                squares.get(i).setY(pivotY - pivotX + oldX.get(i));
+            }
+            drawShape();
         }
-        for (int i = 0; i < squares.size(); i++){
-            squares.get(i).setY(oldX.get(i));
-        }
-        drawShape();
     }
 
     private List<Integer> getOldXs(){
@@ -198,8 +210,8 @@ public class Tetromino {
     }
 
     private void generateRandom() {
-        Random rand = new Random();
-        switch(rand.nextInt(7)) {
+        type = new Random().nextInt(7);
+        switch(type) {
             case 0:
                 zShape1();
                 break;
@@ -213,10 +225,10 @@ public class Tetromino {
                 lShape2();
                 break;
             case 4:
-                squareShape();
+                tShape();
                 break;
             case 5:
-                tShape();
+                squareShape();
                 break;
             case 6:
                 lineShape();
@@ -239,14 +251,7 @@ public class Tetromino {
             squares.get(i).setX(oldX + x);
             squares.get(i).setY(oldY + y);
         }
-    }
-
-    // private static final List<Provider<Tetromino>> tetrominoGenerators = List.of(
-    //     Tetromino::square,
-    //     Tetromino::lShape,
-    //     ...etc..
-    // );
-
-
-    
+        pivotX = 1 + x;
+        pivotY = 1 + y;
+    } 
 }
