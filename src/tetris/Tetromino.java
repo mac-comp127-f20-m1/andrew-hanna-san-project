@@ -74,27 +74,31 @@ public class Tetromino {
     }
 
     /**
-     * Move the Tetromino right by one block.
+     * Move the Tetromino right by one block if within bounds.
      */
-    public void moveRight(){
-        for (int i = 0; i < squares.size(); i++){
-            int currentX = squares.get(i).getX();
-            squares.get(i).setX(currentX + 1);
+    public void moveRight(Board board){
+        if (Collections.max(getOldXs()) + 1 < board.getMaxWidth()){
+            for (int i = 0; i < squares.size(); i++){
+                int currentX = squares.get(i).getX();
+                squares.get(i).setX(currentX + 1);
+            }
+            pivotX = pivotX + 1;
+            drawShape();
         }
-        pivotX = pivotX + 1;
-        drawShape();
     }
 
     /**
-     * Move the Tetromino left by one block.
+     * Move the Tetromino left by one block if within bounds.
      */
     public void moveLeft(){
-        for (int i = 0; i < squares.size(); i++){
+        if (Collections.min(getOldXs()) - 1 >= 0){
+            for (int i = 0; i < squares.size(); i++){
             int currentX = squares.get(i).getX();
             squares.get(i).setX(currentX - 1);
+            }
+            pivotX = pivotX - 1;
+            drawShape();
         }
-        pivotX = pivotX - 1;
-        drawShape();
     }
 
     

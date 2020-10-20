@@ -50,7 +50,7 @@ public class Game {
         if(pressed.getKey().equals(Key.LEFT_ARROW) || pressed.getKey().equals(Key.A)){
             current.moveLeft();
         } else if(pressed.getKey().equals(Key.RIGHT_ARROW) || pressed.getKey().equals(Key.D)){
-            current.moveRight();
+            current.moveRight(board);
         } else if (pressed.getKey().equals(Key.UP_ARROW) || pressed.getKey().equals(Key.W)){
             current.rotateShape();
         }
