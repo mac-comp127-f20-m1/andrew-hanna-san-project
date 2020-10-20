@@ -52,7 +52,7 @@ public class Game {
         } else if(pressed.getKey().equals(Key.RIGHT_ARROW) || pressed.getKey().equals(Key.D)){
             current.moveRight(board);
         } else if (pressed.getKey().equals(Key.UP_ARROW) || pressed.getKey().equals(Key.W)){
-            current.rotateShape();
+            current.rotateShape(board);
         }
     }
 

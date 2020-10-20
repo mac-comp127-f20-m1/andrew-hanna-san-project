@@ -126,16 +126,20 @@ public class Tetromino {
         return true;
     }
 
-    public void rotateShape(){
-
+    public void rotateShape(Board board){
         if (type == 5){
         } else {
             List<Integer> oldX = getOldXs();
             List<Integer> oldY = getOldYs();
             for (int i = 0; i < squares.size(); i++){
-                squares.get(i).setX(pivotX + pivotY - oldY.get(i));
+                if (board.getGrid().get(pivotY - pivotX + oldX.get(i)).get(pivotX + pivotY - oldY.get(i))
+                || (pivotX + pivotY - oldY.get(i) <= 0 || pivotX + pivotY - oldY.get(i) >= board.getMaxWidth() -1)
+                ){
+                    return;
+                }
             }
             for (int i = 0; i < squares.size(); i++){
+                squares.get(i).setX(pivotX + pivotY - oldY.get(i));
                 squares.get(i).setY(pivotY - pivotX + oldX.get(i));
             }
             drawShape();
