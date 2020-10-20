@@ -48,7 +48,7 @@ public class Game {
     private void keyDownHandler(KeyboardEvent pressed) {
         timeUntilPieceMoves = INITIAL_MOVE_TIME;
         if(pressed.getKey().equals(Key.LEFT_ARROW) || pressed.getKey().equals(Key.A)){
-            current.moveLeft();
+            current.moveLeft(board);
         } else if(pressed.getKey().equals(Key.RIGHT_ARROW) || pressed.getKey().equals(Key.D)){
             current.moveRight(board);
         } else if (pressed.getKey().equals(Key.UP_ARROW) || pressed.getKey().equals(Key.W)){

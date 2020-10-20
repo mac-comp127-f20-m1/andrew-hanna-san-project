@@ -77,7 +77,8 @@ public class Tetromino {
      * Move the Tetromino right by one block if within bounds.
      */
     public void moveRight(Board board){
-        if (Collections.max(getOldXs()) + 1 < board.getMaxWidth()){
+        if (Collections.max(getOldXs()) + 1 < board.getMaxWidth()
+        && checkRightSideWayCollision(board)){
             for (int i = 0; i < squares.size(); i++){
                 int currentX = squares.get(i).getX();
                 squares.get(i).setX(currentX + 1);
@@ -90,8 +91,9 @@ public class Tetromino {
     /**
      * Move the Tetromino left by one block if within bounds.
      */
-    public void moveLeft(){
-        if (Collections.min(getOldXs()) - 1 >= 0){
+    public void moveLeft(Board board){
+        if (Collections.min(getOldXs()) - 1 >= 0
+        && checkLeftSideWayCollision(board)){
             for (int i = 0; i < squares.size(); i++){
             int currentX = squares.get(i).getX();
             squares.get(i).setX(currentX - 1);
@@ -101,7 +103,29 @@ public class Tetromino {
         }
     }
 
-    
+
+    public boolean checkLeftSideWayCollision(Board board){
+        for(Square square : squares){
+            int x = square.getX();
+            int y = square.getY();
+            if (board.getGrid().get(y).get(x - 1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkRightSideWayCollision(Board board){
+        for(Square square : squares){
+            int x = square.getX();
+            int y = square.getY();
+            if (board.getGrid().get(y).get(x + 1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void rotateShape(){
 
         if (type == 5){
