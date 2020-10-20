@@ -25,7 +25,6 @@ public class Game {
 
     private void gameLoop(double dt) {
         // First, check if the timer is at 0.
-        board.updatePositions();
         timeUntilPieceMoves -= dt;
         if (timeUntilPieceMoves < 0) {
             // If it is, first check if the tetromino is colliding with another/the bottom
