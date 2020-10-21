@@ -10,13 +10,15 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Rectangle;
 
 public class Tetromino {
-    public final Color zColor1 = Color.GREEN;
-    public final Color zColor2 = Color.RED;
-    public final Color lineColor = Color.CYAN;
-    public final Color lColor1 = Color.ORANGE;
-    public final Color lColor2 = Color.BLUE;
-    public final Color squareColor = Color.YELLOW;
-    public final Color tColor = Color.MAGENTA;
+    public final List<Color> COLORS = List.of(
+        Color.GREEN,
+        Color.RED,
+        Color.ORANGE,
+        Color.BLUE,
+        Color.MAGENTA,
+        Color.YELLOW,
+        Color.CYAN
+    );
     GraphicsGroup shape;
     private int squareSize;
     private List<Square> squares;
@@ -128,8 +130,7 @@ public class Tetromino {
     }
 
     public void rotateShape(Board board) {
-        if (type == 5) {
-        } else {
+        if (type != 5) {
             List<Integer> oldX = getOldXs();
             List<Integer> oldY = getOldYs();
             for (int i = 0; i < squares.size(); i++) {
@@ -168,9 +169,6 @@ public class Tetromino {
         squares.add(new Square(1, 0, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 1, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(zColor1);
-        }
     }
 
     private void zShape2() {
@@ -178,9 +176,6 @@ public class Tetromino {
         squares.add(new Square(1, 0, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 0, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(zColor2);
-        }
     }
 
     private void lineShape() {
@@ -188,9 +183,6 @@ public class Tetromino {
         squares.add(new Square(1, 0, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 0, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(3, 0, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(lineColor);
-        }
     }
 
     private void lShape1() {
@@ -198,9 +190,6 @@ public class Tetromino {
         squares.add(new Square(0, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 1, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(lColor1);
-        }
     }
 
     private void lShape2() {
@@ -208,9 +197,6 @@ public class Tetromino {
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 0, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(lColor2);
-        }
     }
 
     private void squareShape() {
@@ -218,9 +204,6 @@ public class Tetromino {
         squares.add(new Square(0, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 0, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(squareColor);
-        }
     }
 
     private void tShape() {
@@ -228,9 +211,6 @@ public class Tetromino {
         squares.add(new Square(0, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(1, 1, new Rectangle(0, 0, squareSize, squareSize)));
         squares.add(new Square(2, 1, new Rectangle(0, 0, squareSize, squareSize)));
-        for (Square square : squares) {
-            square.getRectangle().setFillColor(tColor);
-        }
     }
 
     private void drawShape() {
@@ -270,6 +250,7 @@ public class Tetromino {
         shape = new GraphicsGroup();
         for (Square square : squares) {
             shape.add(square.getRectangle());
+            square.getRectangle().setFillColor(COLORS.get(type));
         }
     }
 
