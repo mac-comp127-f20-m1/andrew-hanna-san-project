@@ -123,8 +123,8 @@ public class Tetromino {
             List<Integer> oldY = getOldYs();
             for (int i = 0; i < squares.size(); i++) {
                 if (board.getGrid().get(pivotY - pivotX + oldX.get(i)).get(pivotX + pivotY - oldY.get(i))
-                    || (pivotX + pivotY - oldY.get(i) <= 0
-                        || pivotX + pivotY - oldY.get(i) >= board.getMaxWidth() - 1)) {
+                    || (pivotX + pivotY - oldX.get(i) < 0
+                        || pivotX + pivotY - oldX.get(i) > board.getMaxWidth() - 1)) {
                     return;
                 }
             }
