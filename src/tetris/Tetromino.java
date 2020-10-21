@@ -52,18 +52,6 @@ public class Tetromino {
     }
 
     /**
-     * Move the Tetromino up by one block.
-     */
-    public void moveUp() {
-        for (int i = 0; i < squares.size(); i++) {
-            int currentY = squares.get(i).getY();
-            squares.get(i).setY(currentY - 1);
-        }
-        drawShape();
-    }
-
-
-    /**
      * Move the Tetromino down by one block.
      */
     public void moveDown(Board board) {
