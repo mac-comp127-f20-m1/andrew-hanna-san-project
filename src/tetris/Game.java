@@ -13,7 +13,7 @@ public class Game {
     private int score = 0;
     private GraphicsText scoreDisplay;
 
-    final double INITIAL_MOVE_TIME = 0.14;
+    final double INITIAL_MOVE_TIME = 0.5;
     final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
     final int SQUARE_SIZE = WINDOW_WIDTH / BOARD_WIDTH;
@@ -59,9 +59,13 @@ public class Game {
                 current.moveDown(board);
             }
             // Finally, reset the timer and update the score display.
-            timeUntilPieceMoves = INITIAL_MOVE_TIME / 1 + (score / 10000.0);
+            resetTimer();
             updateScore();
         }
+    }
+
+    private void resetTimer(){
+        timeUntilPieceMoves = INITIAL_MOVE_TIME / (1 + (score / 4000.0));
     }
 
     private void updateScore(){
@@ -71,7 +75,7 @@ public class Game {
 
     private void keyDownHandler(KeyboardEvent pressed) {
         double oldTime = timeUntilPieceMoves;
-        timeUntilPieceMoves = INITIAL_MOVE_TIME;
+        resetTimer();
         if(pressed.getKey().equals(Key.LEFT_ARROW) || pressed.getKey().equals(Key.A)){
             current.moveLeft(board);
         } else if(pressed.getKey().equals(Key.RIGHT_ARROW) || pressed.getKey().equals(Key.D)){
