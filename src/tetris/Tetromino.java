@@ -131,7 +131,7 @@ public class Tetromino {
         for (Square square : squares) {
             int x = square.getX();
             int y = square.getY();
-            if (Collections.max(getOldXs()) + 1 >= board.getMaxWidth() ||
+            if (Collections.max(getOldXs()) + 1 >= board.getWidth() ||
             board.getGrid().get(y).get(x + 1))
              {
                 return true;
@@ -170,7 +170,7 @@ public class Tetromino {
         List<Integer> oldX = getOldXs();
         for (int i = 0; i < squares.size(); i++) {
             if  (rotationPointX + rotationPointY - oldY.get(i) < 0
-                || rotationPointX + rotationPointY - oldY.get(i) >= board.getMaxWidth()
+                || rotationPointX + rotationPointY - oldY.get(i) >= board.getWidth()
                 || rotationPointY - rotationPointX + oldX.get(i) >= board.getGrid().size()){
                     return true;
                 }

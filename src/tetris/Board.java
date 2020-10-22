@@ -10,7 +10,7 @@ public class Board {
     private GraphicsGroup boardGroup;
     private List<List<Boolean>> grid;
     private List<List<Rectangle>> visualGrid;
-    private final int maxWidth, maxHeight;
+    private final int width, height;
     private final double squareSize;
 
     /**
@@ -20,13 +20,13 @@ public class Board {
      * @param squareSize The width/height of each square, in pixels
      */
     public Board(int gridWidth, int gridHeight, double squareSize){
-        maxWidth = gridWidth;
-        maxHeight = gridHeight;
+        width = gridWidth;
+        height = gridHeight;
         this.squareSize = squareSize;
 
         grid = new ArrayList<>();
         visualGrid = new ArrayList<>();
-        for(int i = 0; i < maxHeight; i++){
+        for(int i = 0; i < height; i++){
             grid.add(generateNewBooleanRow());
             visualGrid.add(generateNewVisualRow());
         }
@@ -35,7 +35,7 @@ public class Board {
     }
 
     /**
-     * Adds the given List of Square objects to the grid.
+     * Adds the given List of Square objects to the board.
      */
     public void addSquares(List<Square> squares){
         for(Square square : squares){
@@ -43,24 +43,25 @@ public class Board {
             visualGrid.get(square.getY()).set(square.getX(), square.getRectangle());
             boardGroup.add(square.getRectangle());
         }
-        updatePositions();
     }
 
     /**
-     * Checks for and removes any full rows. Also moves any rows above those rows down.
+     * Checks for and removes any full rows from board.
+     * Also moves down all rows above, and adds a new
+     * (empty) row at the top.
      */
     public int removeFullRows(){
         int clearedRows = 0;
-        for(int i = 0; i < maxHeight; i++){
+        for(int i = 0; i < height; i++){
             List<Boolean> row = grid.get(i);
             if(row.stream().allMatch(square -> square)){
                 clearedRows++;
                 //Remove the visuals for the full row from the boardGroup
                 visualGrid.get(i).forEach(boardGroup::remove);
-                //Add new rows in the grid and visual grid
+                //Add new row at the top of both grids
                 grid.add(0, generateNewBooleanRow());
                 visualGrid.add(0, generateNewVisualRow());
-                //Remove the row from the visual grid
+                //Remove the full row from both grids
                 grid.remove(i + 1);
                 visualGrid.remove(i + 1);
                 //Finally, move all the squares above the full row down by one square
@@ -77,23 +78,9 @@ public class Board {
         return score;
     }
 
-    /**
-     * Returns the 2d grid of booleans used to track whether or not a block is full.
-     */
-    public List<List<Boolean>> getGrid() {
-        return grid;
-    }
-
-    /**
-     * Returns the GraphicsGroup that any blocks already on the board are placed in.
-     */
-    public GraphicsGroup getGroup(){
-        return boardGroup;
-    }
-
     private List<Boolean> generateNewBooleanRow(){
         List<Boolean> row = new ArrayList<>();
-        for(int i = 0; i < maxWidth; i++){
+        for(int i = 0; i < width; i++){
             row.add(false);
         }
         return row;
@@ -101,7 +88,7 @@ public class Board {
 
     private List<Rectangle> generateNewVisualRow(){
         List<Rectangle> row = new ArrayList<>();
-        for(int i = 0; i < maxWidth; i++){
+        for(int i = 0; i < width; i++){
             row.add(null);
         }
         return row;
@@ -119,7 +106,26 @@ public class Board {
         }
     }
 
-    public int getMaxWidth(){
-        return maxWidth;
+    /**
+     * Returns the width of the board in squares.
+     */
+    public int getWidth(){
+        return width;
+    }
+
+    /**
+     * Returns the 2d grid of booleans used to track
+     * whether or not a block is full.
+     */
+    public List<List<Boolean>> getGrid() {
+        return grid;
+    }
+
+    /**
+     * Returns the GraphicsGroup that any blocks
+     * already on the board are in.
+     */
+    public GraphicsGroup getGroup(){
+        return boardGroup;
     }
 }
