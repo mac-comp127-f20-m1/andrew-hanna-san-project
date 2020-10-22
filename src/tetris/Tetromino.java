@@ -370,6 +370,10 @@ public class Tetromino {
             squares.get(i).setY(oldY + y);
         }
         rotationPointX = 1 + x;
-        rotationPointY = 1 + y;
+        if(type == 6){
+            rotationPointY = y;
+        }else{
+            rotationPointY = 1 + y;
+        }    
     }
 }
