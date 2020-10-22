@@ -17,6 +17,7 @@ public class Game {
     final int WINDOW_WIDTH = 440, WINDOW_HEIGHT = 800;
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
     final int SQUARE_SIZE = WINDOW_WIDTH / BOARD_WIDTH;
+    final double MOVE_TIME_SCORE_FACTOR = 4000;
 
     /**
      * Creates a new Tetris Game, including the window
@@ -40,7 +41,7 @@ public class Game {
         canvas.add(board.getGroup());
         score = 0;
         scoreDisplay = new GraphicsText();
-        scoreDisplay.setFontSize(WINDOW_HEIGHT / 40);
+        scoreDisplay.setFontSize(WINDOW_HEIGHT / SQUARE_SIZE);
         updateScore();
         canvas.add(scoreDisplay);
     }
@@ -69,7 +70,7 @@ public class Game {
     }
 
     private void resetTimer(){
-        timeUntilPieceMoves = INITIAL_MOVE_TIME / (1 + (score / 4000.0));
+        timeUntilPieceMoves = INITIAL_MOVE_TIME / (1 + (score / MOVE_TIME_SCORE_FACTOR));
     }
 
     private void updateScore(){
@@ -93,11 +94,6 @@ public class Game {
         }
     }
 
-    /**
-     * Check win or lose after each tetromino touches ground Return boolean
-     * 
-     * @return
-     */
     private Boolean checkLoss() {
         if (board.getGrid().get(0).contains(true)) {
             return true;
