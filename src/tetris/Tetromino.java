@@ -47,22 +47,16 @@ public class Tetromino {
             rotationPointX = 1;
             rotationPointY = 0;
         }
-        setPosition(initialX, initialY);
-        drawShape();
+        moveBy(initialX, initialY);
     }
-
 
     /**
      * Move the Tetromino down by one block if it is still within bounds 
-     * and if there is no object to its right.  
+     * and if there is no object below it.  
      */
     public void moveDown(Board board) {
         if (!checkBottomSideCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).incrementY();
-            }
-            rotationPointY = rotationPointY + 1;
-            drawShape();
+           moveBy(0,1);
         }
     }
 
@@ -72,8 +66,7 @@ public class Tetromino {
      */
     public void moveRight(Board board) {
         if (!checkRightSideCollision(board)) {
-            setPosition(1, 0);
-            drawShape();
+            moveBy(1, 0);
         }
     }
 
@@ -83,8 +76,7 @@ public class Tetromino {
      */
     public void moveLeft(Board board) {
         if (!checkLeftSideCollision(board)) {
-            setPosition(-1, 0);
-            drawShape();
+            moveBy(-1, 0);
         }
     }
 
@@ -146,12 +138,17 @@ public class Tetromino {
      * the board).
      */
     public void rotateShape(Board board) {
+        // First, check that tetromino is not of shape Square.
         if (type != 5) {
             List<Integer> oldX = getOldXs();
             List<Integer> oldY = getOldYs();
+            // Now, check if we rotate it, it doesn't collide with the wall or tetromino.
             if (checkCollisionWithWall(board) || checkCollisionWithTetromino(board)){
                 return;
             }
+            // Rotation of 90 degrees around the rotatioal point is given by a formula:
+            // newX = rotationPointX + rotationPointY - oldY;
+            // newY = rotationPointY + rotationPointX - oldX;
             for (int i = 0; i < squares.size(); i++) {
                 squares.get(i).setX(rotationPointX + rotationPointY - oldY.get(i));
                 squares.get(i).setY(rotationPointY - rotationPointX + oldX.get(i));
@@ -361,7 +358,7 @@ public class Tetromino {
      * Move the tetromino to the given x and y.
      * 
      */
-    private void setPosition(int x, int y) {
+    private void moveBy(int x, int y) {
         for (int i = 0; i < squares.size(); i++) {
             int oldX = squares.get(i).getX();
             int oldY = squares.get(i).getY();
@@ -370,5 +367,6 @@ public class Tetromino {
         }
         rotationPointX += x;
         rotationPointY += y; 
+        drawShape();
     }
 }
