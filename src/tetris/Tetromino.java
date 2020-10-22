@@ -40,6 +40,13 @@ public class Tetromino {
         this.squareSize = squareSize;
         squares = new ArrayList<>();
         generateRandom();
+        if (type != 6){
+            rotationPointY = 1;
+            rotationPointX = 1;
+        } else {
+            rotationPointX = 1;
+            rotationPointY = 0;
+        }
         setPosition(initialX, initialY);
         drawShape();
     }
@@ -65,11 +72,7 @@ public class Tetromino {
      */
     public void moveRight(Board board) {
         if (!checkRightSideCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                int currentX = squares.get(i).getX();
-                squares.get(i).setX(currentX + 1);
-            }
-            rotationPointX = rotationPointX + 1;
+            setPosition(1, 0);
             drawShape();
         }
     }
@@ -80,11 +83,7 @@ public class Tetromino {
      */
     public void moveLeft(Board board) {
         if (!checkLeftSideCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                int currentX = squares.get(i).getX();
-                squares.get(i).setX(currentX - 1);
-            }
-            rotationPointX = rotationPointX - 1;
+            setPosition(-1, 0);
             drawShape();
         }
     }
@@ -369,11 +368,7 @@ public class Tetromino {
             squares.get(i).setX(oldX + x);
             squares.get(i).setY(oldY + y);
         }
-        rotationPointX = 1 + x;
-        if(type == 6){
-            rotationPointY = y;
-        }else{
-            rotationPointY = 1 + y;
-        }    
+        rotationPointX += x;
+        rotationPointY += y; 
     }
 }
