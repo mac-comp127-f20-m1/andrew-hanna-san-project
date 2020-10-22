@@ -23,12 +23,13 @@ public class Tetromino {
     private int squareSize;
     private List<Square> squares;
     private int type;
-    private int pivotX;
-    private int pivotY;
+    private int rotationPointX; 
+    private int rotationPointY;
 
 
     /**
-     * This randomly generates a tetromino at position x and y.
+     * This randomly generates a tetromino at position x and y. Note that x 
+     * and y has unit of square.
      */
     public Tetromino(int initialX, int initialY, int squareSize) {
         this.squareSize = squareSize;
@@ -38,7 +39,58 @@ public class Tetromino {
         drawShape();
     }
 
-    public boolean checkCollision(Board board) {
+
+    /**
+     * Move the Tetromino down by one block if it is still within bounds 
+     * and if there is no object to its right.  
+     */
+    public void moveDown(Board board) {
+        if (!checkBottomSideCollision(board)) {
+            for (int i = 0; i < squares.size(); i++) {
+                squares.get(i).incrementY();
+            }
+            rotationPointY = rotationPointY + 1;
+            drawShape();
+        }
+    }
+
+    /**
+     * Move the Tetromino right by one block if it is still within bounds 
+     * and if there is no object to its right.
+     */
+    public void moveRight(Board board) {
+        if (Collections.max(getOldXs()) + 1 < board.getMaxWidth()
+            && checkRightSideCollision(board)) {
+            for (int i = 0; i < squares.size(); i++) {
+                int currentX = squares.get(i).getX();
+                squares.get(i).setX(currentX + 1);
+            }
+            rotationPointX = rotationPointX + 1;
+            drawShape();
+        }
+    }
+
+   /**
+     * Move the Tetromino right by one block if it is still within bounds 
+     * and if there is no object to its left.
+     */
+    public void moveLeft(Board board) {
+        if (!checkLeftSideCollision(board)) {
+            for (int i = 0; i < squares.size(); i++) {
+                int currentX = squares.get(i).getX();
+                squares.get(i).setX(currentX - 1);
+            }
+            rotationPointX = rotationPointX - 1;
+            drawShape();
+        }
+    }
+
+    /**
+     * Takes in a board, this method returns true if there is any square objects from
+     * the board right below any square of the current tetromino. If there is, it also 
+     * adds the tetromino to the board.
+     */
+    public boolean checkBottomSideCollision(Board board) {
         for (Square square : squares) {
             int x = square.getX();
             int y = square.getY();
@@ -52,61 +104,22 @@ public class Tetromino {
     }
 
     /**
-     * Move the Tetromino down by one block.
+     * Takes in a board, this method returns true if it is still within bounds 
+     * and if there is no object to its left.
      */
-    public void moveDown(Board board) {
-        if (!checkCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).incrementY();
-            }
-            pivotY = pivotY + 1;
-            drawShape();
-        }
-    }
-
-    /**
-     * Move the Tetromino right by one block if within bounds.
-     */
-    public void moveRight(Board board) {
-        if (Collections.max(getOldXs()) + 1 < board.getMaxWidth()
-            && checkRightSideWayCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                int currentX = squares.get(i).getX();
-                squares.get(i).setX(currentX + 1);
-            }
-            pivotX = pivotX + 1;
-            drawShape();
-        }
-    }
-
-    /**
-     * Move the Tetromino left by one block if within bounds.
-     */
-    public void moveLeft(Board board) {
-        if (Collections.min(getOldXs()) - 1 >= 0
-            && checkLeftSideWayCollision(board)) {
-            for (int i = 0; i < squares.size(); i++) {
-                int currentX = squares.get(i).getX();
-                squares.get(i).setX(currentX - 1);
-            }
-            pivotX = pivotX - 1;
-            drawShape();
-        }
-    }
-
-
-    public boolean checkLeftSideWayCollision(Board board) {
+    public boolean checkLeftSideCollision(Board board) {
         for (Square square : squares) {
             int x = square.getX();
             int y = square.getY();
-            if (board.getGrid().get(y).get(x - 1)) {
-                return false;
+            if (board.getGrid().get(y).get(x - 1) 
+            || Collections.min(getOldXs()) - 1 < 0) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    public boolean checkRightSideWayCollision(Board board) {
+    public boolean checkRightSideCollision(Board board) {
         for (Square square : squares) {
             int x = square.getX();
             int y = square.getY();
@@ -122,15 +135,15 @@ public class Tetromino {
             List<Integer> oldX = getOldXs();
             List<Integer> oldY = getOldYs();
             for (int i = 0; i < squares.size(); i++) {
-                if (board.getGrid().get(pivotY - pivotX + oldX.get(i)).get(pivotX + pivotY - oldY.get(i))
-                    || (pivotX + pivotY - oldX.get(i) < 0
-                        || pivotX + pivotY - oldX.get(i) > board.getMaxWidth() - 1)) {
+                if (board.getGrid().get(rotationPointY - rotationPointX + oldX.get(i)).get(rotationPointX + rotationPointY - oldY.get(i))
+                    || (rotationPointX + rotationPointY - oldX.get(i) < 0
+                        || rotationPointX + rotationPointY - oldX.get(i) > board.getMaxWidth() - 1)) {
                     return;
                 }
             }
             for (int i = 0; i < squares.size(); i++) {
-                squares.get(i).setX(pivotX + pivotY - oldY.get(i));
-                squares.get(i).setY(pivotY - pivotX + oldX.get(i));
+                squares.get(i).setX(rotationPointX + rotationPointY - oldY.get(i));
+                squares.get(i).setY(rotationPointY - rotationPointX + oldX.get(i));
             }
             drawShape();
         }
@@ -201,6 +214,7 @@ public class Tetromino {
         squares.add(new Square(2, 1, new Rectangle(0, 0, squareSize, squareSize)));
     }
 
+
     private void drawShape() {
         for (int i = 0; i < squares.size(); i++) {
             int x = squares.get(i).getX();
@@ -253,7 +267,7 @@ public class Tetromino {
             squares.get(i).setX(oldX + x);
             squares.get(i).setY(oldY + y);
         }
-        pivotX = 1 + x;
-        pivotY = 1 + y;
+        rotationPointX = 1 + x;
+        rotationPointY = 1 + y;
     }
 }
