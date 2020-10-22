@@ -18,6 +18,10 @@ public class Game {
     final int BOARD_WIDTH = 11, BOARD_HEIGHT = 20;
     final int SQUARE_SIZE = WINDOW_WIDTH / BOARD_WIDTH;
 
+    /**
+     * Creates a new Tetris Game, including the window
+     * and everything else the game needs to function.
+     */
     public Game() {
         timeUntilPieceMoves = INITIAL_MOVE_TIME;
         canvas = new CanvasWindow("Tetris!", WINDOW_WIDTH, WINDOW_HEIGHT);
