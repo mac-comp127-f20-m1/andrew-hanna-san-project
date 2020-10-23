@@ -64,7 +64,7 @@ public class Board {
                 //Remove the full row from both grids
                 grid.remove(i + 1);
                 visualGrid.remove(i + 1);
-                //Finally, move all the squares above the full row down by one square
+                //Finally, update the visuals of all the squares to reflect their new positions
                 updatePositions();
             }
         }
@@ -116,6 +116,9 @@ public class Board {
     /**
      * Returns the 2d grid of booleans used to track
      * whether or not a block is full.
+     * 
+     * The grid is in the format of rows containing columns.
+     * (y comes before x when retrieving values)
      */
     public List<List<Boolean>> getGrid() {
         return grid;
