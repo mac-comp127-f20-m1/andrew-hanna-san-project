@@ -138,7 +138,8 @@ public class Tetromino {
         for (int i = 0; i < squares.size(); i++) {
             if  (rotationPointX + rotationPointY - oldY.get(i) < 0
                 || rotationPointX + rotationPointY - oldY.get(i) >= board.getWidth()
-                || rotationPointY - rotationPointX + oldX.get(i) >= board.getGrid().size()){
+                || rotationPointY - rotationPointX + oldX.get(i) >= board.getGrid().size()
+                || rotationPointY - rotationPointX + oldX.get(i) < 0){
                     return true;
                 }
         }
