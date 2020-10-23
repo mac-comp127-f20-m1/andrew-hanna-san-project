@@ -51,8 +51,9 @@ public class Game {
         timeUntilPieceMoves -= dt;
         if (timeUntilPieceMoves < 0) {
             // If it is, first check if the tetromino is colliding with another/the bottom
-            if (current.checkBottomSideCollision(board)) {
+            if (current.checkCollision(board, 0, 1)) {
                 // If the tetromino is hitting something, add it to the board and make a new one
+                board.addSquares(current.getSquares());
                 canvas.remove(current.getShape());
                 createTetromino();
                 score += board.removeFullRows();

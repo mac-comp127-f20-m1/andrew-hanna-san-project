@@ -15,7 +15,7 @@ import edu.macalester.graphics.Rectangle;
  * 
  */
 public class Tetromino {
-    public final List<Color> COLORS = List.of(
+    public static final List<Color> COLORS = List.of(
         Color.GREEN,
         Color.RED,
         Color.ORANGE,
@@ -55,7 +55,7 @@ public class Tetromino {
      * and if there is no object below it.  
      */
     public void moveDown(Board board) {
-        if (!checkBottomSideCollision(board)) {
+        if (!checkCollision(board, 0, 1)) {
            moveBy(0,1);
         }
     }
@@ -65,7 +65,7 @@ public class Tetromino {
      * and if there is no object to its right.
      */
     public void moveRight(Board board) {
-        if (!checkRightSideCollision(board)) {
+        if (!checkCollision(board, 1, 0)) {
             moveBy(1, 0);
         }
     }
@@ -75,62 +75,33 @@ public class Tetromino {
      * and if there is no object to its left.
      */
     public void moveLeft(Board board) {
-        if (!checkLeftSideCollision(board)) {
+        if (!checkCollision(board, -1, 0)) {
             moveBy(-1, 0);
         }
     }
 
     /**
-     * Takes in a board, this method returns true if there is any square objects from
-     * the board right below any square of the current tetromino. If there is, it also 
-     * adds the tetromino to the board.
+     * Checks collision with tetrominos that have already landed,
+     * i.e. that are on the board, and the walls.
+     * @param board The Board Object to check for collision with
+     * @param xOffset The distance away from the current x position to check.
+     * @param yOffset The distance away from the current y position to check.
+     * @return
      */
-    public boolean checkBottomSideCollision(Board board) {
-        for (Square square : squares) {
+    public boolean checkCollision(Board board, int xOffset, int yOffset){
+        for(Square square : squares) {
             int x = square.getX();
             int y = square.getY();
-            if (y + 1 >= board.getGrid().size() ||
-                board.getGrid().get(y + 1).get(x)) {
-                board.addSquares(squares);
+            if (y + yOffset >= board.getGrid().size() ||
+                x + xOffset >= board.getGrid().get(y).size() ||
+                x + xOffset < 0 ||
+                board.getGrid().get(y + yOffset).get(x + xOffset)
+            ){
                 return true;
             }
         }
         return false;
     }
-
-    /**
-     * Takes in a board, this method returns false if it is still within bounds 
-     * and if there is no object to its left.
-     */
-    public boolean checkLeftSideCollision(Board board) {
-        for (Square square : squares) {
-            int x = square.getX();
-            int y = square.getY();
-            if (Collections.min(getOldXs()) - 1 < 0 ||
-            board.getGrid().get(y).get(x - 1) ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Takes in a board, this method returns false if it is still within bounds 
-     * and if there is no object to its right.
-     */
-    public boolean checkRightSideCollision(Board board) {
-        for (Square square : squares) {
-            int x = square.getX();
-            int y = square.getY();
-            if (Collections.max(getOldXs()) + 1 >= board.getWidth() ||
-            board.getGrid().get(y).get(x + 1))
-             {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Takes in a board, this method rotates the tetromino 90 degrees clockwise if there is 
@@ -143,7 +114,7 @@ public class Tetromino {
             List<Integer> oldX = getOldXs();
             List<Integer> oldY = getOldYs();
             // Now, check if we rotate it, it doesn't collide with the wall or tetromino.
-            if (checkCollisionWithWall(board) || checkCollisionWithTetromino(board)){
+            if (checkWallCollisionAfterRotation(board) || checkBoardCollisionAfterRotation(board)){
                 return;
             }
             // Rotation of 90 degrees around the rotatioal point is given by a formula:
@@ -161,7 +132,7 @@ public class Tetromino {
      * This method returns true if the new position of each square of the tetrimono after
      * rotation is out of bounds.
      */
-    private Boolean checkCollisionWithWall(Board board){
+    private Boolean checkWallCollisionAfterRotation(Board board){
         List<Integer> oldY = getOldYs();
         List<Integer> oldX = getOldXs();
         for (int i = 0; i < squares.size(); i++) {
@@ -178,7 +149,7 @@ public class Tetromino {
      * This method returns true if the new position of each square of the current tetrimono after
      * rotation is occupied by other tetrominoes already added to the board.
      */
-    private Boolean checkCollisionWithTetromino(Board board){
+    private Boolean checkBoardCollisionAfterRotation(Board board){
         List<Integer> oldX = getOldXs();
         List<Integer> oldY = getOldYs();
         for (int i = 0; i < squares.size(); i++) {
@@ -350,8 +321,18 @@ public class Tetromino {
         }
     }
 
+    /**
+     * Returns the graphics that represent the Tetromino.
+     */
     public GraphicsGroup getShape() {
         return shape;
+    }
+
+    /**
+     * Returns the list of Square objects that make up the Tetromino.
+     */
+    public List<Square> getSquares() {
+        return squares;
     }
 
     /**
